@@ -1,22 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"lucio/snippetbox/pkg/models"
 	"path/filepath"
 )
 
 type templateData struct {
-	Snippet  *models.Snippet
-	Snippets []*models.Snippet
+	CurrentYear int
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
 }
 
 func NewTemplateCache(dir string) (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob(filepath.Join(dir, "*.page.html"))
-	fmt.Println(pages)
 	if err != nil {
 		return nil, err
 	}
