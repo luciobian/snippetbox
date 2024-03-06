@@ -2,16 +2,15 @@ package main
 
 import (
 	"html/template"
+	"lucio/snippetbox/pkg/forms"
 	"lucio/snippetbox/pkg/models"
-	"net/url"
 	"path/filepath"
 	"time"
 )
 
 type templateData struct {
 	CurrentYear int
-	FormData    url.Values
-	FormErrors  map[string]string
+	Form        *forms.Form
 	Snippet     *models.Snippet
 	Snippets    []*models.Snippet
 }
@@ -27,7 +26,7 @@ var functions = template.FuncMap{
 func NewTemplateCache(dir string) (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 
-	pages, err := filepath.Glob(filepath.Join(dir, "*.page.html"))
+	pages, err := filepath.Glob(filepath.Join(dir, "*.page.gohtml"))
 	if err != nil {
 		return nil, err
 	}
@@ -40,12 +39,12 @@ func NewTemplateCache(dir string) (map[string]*template.Template, error) {
 			return nil, err
 		}
 
-		ts, err = ts.ParseGlob(filepath.Join(dir, "*.layout.html"))
+		ts, err = ts.ParseGlob(filepath.Join(dir, "*.layout.gohtml"))
 		if err != nil {
 			return nil, err
 		}
 
-		ts, err = ts.ParseGlob(filepath.Join(dir, "*.partial.html"))
+		ts, err = ts.ParseGlob(filepath.Join(dir, "*.partial.gohtml"))
 		if err != nil {
 			return nil, err
 		}
